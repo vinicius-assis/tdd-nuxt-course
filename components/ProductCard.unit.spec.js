@@ -38,4 +38,13 @@ describe('ProductCard - unit', () => {
     expect(wrapper.text()).toContain('Relógio bonito');
     expect(wrapper.text()).toContain('22.00');
   });
+
+  it('should emit the event addToCart with product object when button gets clicked', async () => {
+    const wrapper = mountProductCard(server);
+
+    await wrapper.find('button').trigger('click');
+
+    expect(wrapper.emitted().addToCart).toBeTruthy();
+    expect(wrapper.emitted().addToCart.length).toBe(1);
+  });
 });
