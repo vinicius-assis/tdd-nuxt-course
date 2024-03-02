@@ -58,4 +58,17 @@ describe('ProductList - integration', () => {
 
     expect(cards).toHaveLength(10);
   });
+
+  it('should display the error message when Promise rejects', async () => {
+    axios.get.mockReturnValue(Promise.reject(new Error('New Error')));
+
+    const wrapper = mount(ProductList, {
+      mocks: {
+        $axios: axios,
+      },
+    });
+    await nextTick();
+
+    expect(wrapper.text()).toContain('Problemas ao carregar a lista!');
+  });
 });
