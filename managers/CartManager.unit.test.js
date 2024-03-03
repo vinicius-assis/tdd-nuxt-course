@@ -8,7 +8,12 @@ describe('CartManager', () => {
     expect(state.open).toBe(true);
   });
 
-  it.todo('should set cart to closed');
+  it('should set cart to closed', () => {
+    const manager = new CartManager();
+    const state = manager.close();
+
+    expect(state.open).toBe(false);
+  });
 
   it.todo('should add product to the card only once');
 
