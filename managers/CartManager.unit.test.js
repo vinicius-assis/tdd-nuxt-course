@@ -34,7 +34,12 @@ describe('CartManager', () => {
     expect(state.items).toHaveLength(1);
   });
 
-  it.todo('should remove product from cart');
+  it('should remove product from cart', () => {
+    const product = server.create('product');
+    const state = manager.removeProduct(product.id);
+
+    expect(state.items).toHaveLength(0);
+  });
 
   it.todo('should clear products');
 
