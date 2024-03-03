@@ -28,6 +28,10 @@ export class CartManager {
     return !!this.state.items.find(({ id }) => id === product.id);
   }
 
+  hasProduct() {
+    return !!this.state.items.length;
+  }
+
   addProduct(product) {
     if (!this.productIsInTheCart(product)) {
       this.state.items.push(product);
