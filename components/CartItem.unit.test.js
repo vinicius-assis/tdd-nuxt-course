@@ -33,4 +33,15 @@ describe('CartItem - unit', () => {
 
     expect(wrapper.vm).toBeDefined();
   });
+
+  it('should display product info', () => {
+    const {
+      wrapper,
+      product: { title, price },
+    } = mountCartItem();
+    const content = wrapper.text();
+
+    expect(content).toContain(title);
+    expect(content).toContain(price);
+  });
 });
