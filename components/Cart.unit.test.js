@@ -1,7 +1,18 @@
 import { mount } from '@vue/test-utils';
+import CartItem from '@/components/CartItem';
 import Cart from '@/components/Cart';
+import { makeServer } from '@/miragejs/server';
 
 describe('Cart - unit', () => {
+  let server;
+  beforeEach(() => {
+    server = makeServer({ enviroment: 'test' });
+  });
+
+  afterEach(() => {
+    server.shutdown();
+  });
+
   it('should mount the component', () => {
     const wrapper = mount(Cart);
 
@@ -38,5 +49,17 @@ describe('Cart - unit', () => {
     const wrapper = mount(Cart);
 
     expect(wrapper.text()).toContain('Cart is empty');
+  });
+
+  it('should display 2 instances of CartItem when 2 products are provided', () => {
+    const products = server.createList('product', 2);
+    const wrapper = mount(Cart, {
+      propsData: {
+        products,
+      },
+    });
+
+    expect(wrapper.findAllComponents(CartItem)).toHaveLength(2);
+    expect(wrapper.text()).not.toContain('Cart is empty');
   });
 });
