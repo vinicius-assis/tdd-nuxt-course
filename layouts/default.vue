@@ -1,4 +1,3 @@
-<!-- eslint-disable vue/attribute-hyphenation -->
 <template>
   <div class="bg-white">
     <header>
@@ -98,7 +97,7 @@
         </nav>
       </div>
     </header>
-    <cart :isOpen="isCartOpen" @close="toggleCart" />
+    <cart :is-open="isCartOpen" @close="toggleCart" />
     <nuxt />
     <footer class="bg-gray-200">
       <div
