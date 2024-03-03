@@ -1,24 +1,7 @@
 import { mount } from '@vue/test-utils';
 import ProductCard from './ProductCard';
 import { makeServer } from '@/miragejs/server';
-import { cartState } from '@/state';
-
-const mountProductCard = (server) => {
-  const product = server.create('product', {
-    title: 'Relógio bonito',
-    price: '22.00',
-    image:
-      'https://images.unsplash.com/photo-1495856458515-0637185db551?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80',
-  });
-
-  const wrapper = mount(ProductCard, {
-    propsData: {
-      product,
-    },
-  });
-
-  return { wrapper, product };
-};
+import { CartManager } from '@/managers/CartManager';
 
 describe('ProductCard - unit', () => {
   let server;
@@ -30,14 +13,36 @@ describe('ProductCard - unit', () => {
     server.shutdown();
   });
 
+  const mountProductCard = () => {
+    const product = server.create('product', {
+      title: 'Relógio bonito',
+      price: '22.00',
+      image:
+        'https://images.unsplash.com/photo-1495856458515-0637185db551?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80',
+    });
+
+    const cartManager = new CartManager();
+
+    const wrapper = mount(ProductCard, {
+      propsData: {
+        product,
+      },
+      mocks: {
+        $cart: cartManager,
+      },
+    });
+
+    return { wrapper, product, cartManager };
+  };
+
   it('should match snapshot', () => {
-    const { wrapper } = mountProductCard(server);
+    const { wrapper } = mountProductCard();
 
     expect(wrapper.element).toMatchSnapshot();
   });
 
   it('should mount the component', () => {
-    const { wrapper } = mountProductCard(server);
+    const { wrapper } = mountProductCard();
 
     expect(wrapper.vm).toBeDefined();
     expect(wrapper.text()).toContain('Relógio bonito');
@@ -45,10 +50,14 @@ describe('ProductCard - unit', () => {
   });
 
   it('should add item to cartState on button click', async () => {
-    const { wrapper } = mountProductCard(server);
+    const { wrapper, cartManager, product } = mountProductCard();
+    const spy = jest.spyOn(cartManager, 'open');
+    const spy2 = jest.spyOn(cartManager, 'addProduct');
 
     await wrapper.find('button').trigger('click');
 
-    expect(cartState.items).toHaveLength(1);
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy2).toHaveBeenCalledTimes(1);
+    expect(spy2).toHaveBeenCalledWith(product);
   });
 });
