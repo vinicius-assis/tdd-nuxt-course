@@ -28,7 +28,6 @@ describe('CartManager', () => {
 
   it('should add product to the card only once', () => {
     const product = server.create('product');
-
     manager.addProduct(product);
     const state = manager.addProduct(product);
 
@@ -43,5 +42,10 @@ describe('CartManager', () => {
 
   it.todo('should return true if cart is not empty');
 
-  it.todo('should return true if product is already in the cart');
+  it('should return true if product is already in the cart', () => {
+    const product = server.create('product');
+
+    manager.addProduct(product);
+    expect(manager.productIsInTheCart(product)).toBe(true);
+  });
 });
