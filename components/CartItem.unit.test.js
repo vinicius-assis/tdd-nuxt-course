@@ -64,4 +64,13 @@ describe('CartItem - unit', () => {
     await button.trigger('click');
     expect(quantity.text()).toContain('4');
   });
+
+  it('should decrease quantity when - button gets clicked', async () => {
+    const { wrapper } = mountCartItem();
+    const quantity = wrapper.find('[data-testid="quantity"]');
+    const button = wrapper.find('[data-testid="-"]');
+
+    await button.trigger('click');
+    expect(quantity.text()).toContain('0');
+  });
 });
