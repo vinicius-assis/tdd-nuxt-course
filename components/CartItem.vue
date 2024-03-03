@@ -29,7 +29,11 @@
           <span data-testid="quantity" class="text-gray-700 mx-2">{{
             quantity
           }}</span>
-          <button class="text-gray-500 focus:outline-none focus:text-gray-600">
+          <button
+            data-testid="-"
+            class="text-gray-500 focus:outline-none focus:text-gray-600"
+            @click="quantity--"
+          >
             <svg
               class="h-5 w-5"
               fill="none"
